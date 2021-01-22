@@ -28,11 +28,11 @@ public class BaseSeleniumTest {
     protected WebDriver driver;
     public static ExtentReports reports = new ExtentReports();
     public static ExtentSparkReporter sparkReporter;
-    protected ExtentTest test;
+    public ExtentTest test;
 
     @BeforeSuite
     public void setUpReporter() {
-        sparkReporter = new ExtentSparkReporter("src//test//resources//reports//test" + LocalTime.now().getNano() + ".html");
+        sparkReporter = new ExtentSparkReporter("src//test//resources//reports//test" + LocalTime.now().getMinute() + ".html");
         sparkReporter.config().setTheme(Theme.DARK);
         reports.attachReporter(sparkReporter);
     }

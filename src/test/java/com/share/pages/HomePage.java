@@ -4,6 +4,7 @@ import com.share.helpers.SeleniumHelper;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -18,10 +19,10 @@ public class HomePage {
     @FindBy(xpath = "//div[@class='folderLink-topbar-select']")
     private WebElement itemNameCheckBox;
 
-    @FindBy(xpath = "//div[@class='folderLink-buttons-download']")
+    @FindBy(xpath = "//div[@class='folderLink-buttons']//button[3]")
     private WebElement downloadSelectedButton;
 
-    @FindBy(id = "download-folder")
+    @FindBy(xpath = "//div[@class='folderLink-buttons']//button[4]")
     private WebElement downloadFolderButton;
 
     @FindBy(xpath = "//div[@class='folderLink-sort']")
@@ -60,26 +61,45 @@ public class HomePage {
     @FindBy(xpath = "//span[@class='selected-sort-field']")
     private WebElement sortByText;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li(1)")
+    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[1]/div/div")
     private WebElement firstItemOnTheList;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li(2)")
+    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[2]/div/div")
     private WebElement secondItemOnTheList;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li(3)")
+    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[3]/div/div")
     private WebElement thirdItemOnTheList;
 
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[1]//div//div/div[4]//span//span[2]")
+    private WebElement firstItemOnTheListText;
+
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[2]//div//div/div[4]//span//span[2]")
+    private WebElement secondItemOnTheListText;
+
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[3]//div//div/div[4]//span//span[2]")
+    private WebElement thirdItemOnTheListText;
+
+    @FindBy(className = "info")
+    private WebElement headerInfoText;
+
+    @FindBy(className = "controls-wrapper" )
+    private WebElement downloadButton;
+
+    @FindBy(className = "header")
+    private WebElement goBackButton;
+
     private SeleniumHelper helper;
-
     private WebDriver driver;
-
+    private Actions action;
     private Logger log = Logger.getLogger(HomePage.class);
 
     public HomePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.helper = new SeleniumHelper(driver);
         this.driver = driver;
+        this.action = new Actions(driver);
     }
+
 
     public HomePage logIn() {
         log.info("Login Process");
@@ -90,17 +110,29 @@ public class HomePage {
         return this;
     }
 
-    public HomePage downloadSelectedItems() {
-        log.info("Start Downloading Selected Items");
+    public String getDownloadSelectedItems() {
+        log.info("Get Selected Files");
         helper.waitForElementToBeDisplayed(downloadSelectedButton);
-        downloadSelectedButton.click();
+        return downloadSelectedButton.getText();
+    }
+
+    public String getDownloadFolderText() {
+        log.info("Get All Files");
+        helper.waitForElementToBeDisplayed(downloadFolderButton);
+        return downloadFolderButton.getText();
+    }
+
+    public HomePage clickDownloadButton() {
+        helper.waitForElementToBeDisplayed(downloadButton);
+        downloadButton.click();
+        log.info("Files Downloaded");
         return this;
     }
 
-    public HomePage downloadFolder() {
-        log.info("Start Downloading Folder");
-        helper.waitForElementToBeDisplayed(downloadFolderButton);
-        downloadFolderButton.click();
+    public HomePage clickGoBackButton() {
+        helper.waitForElementToBeDisplayed(goBackButton);
+        goBackButton.click();
+        log.info("Return to Main Page");
         return this;
     }
 
@@ -149,7 +181,7 @@ public class HomePage {
         return this;
     }
 
-    public String getSortByText() {
+    public String getSortByTitleText() {
         return sortByText.getText();
     }
 
@@ -168,6 +200,51 @@ public class HomePage {
     public HomePage selectThirdItemOnTheList() {
         log.info("Select Third Item On The List");
         thirdItemOnTheList.click();
+        return this;
+    }
+
+    public String getFirstFileName() {
+        helper.waitForElementToBeDisplayed(firstItemOnTheListText);
+        log.info("First File Name Text");
+        return firstItemOnTheListText.getText();
+    }
+
+    public String getSecondFileName() {
+        helper.waitForElementToBeDisplayed(secondItemOnTheListText);
+        log.info("Second File Name Text");
+        return secondItemOnTheListText.getText();
+    }
+
+    public String getThirdFileName() {
+        helper.waitForElementToBeDisplayed(thirdItemOnTheListText);
+        log.info("Third File Name Text");
+        return thirdItemOnTheListText.getText();
+    }
+
+    public String getHeaderInfoText() {
+        helper.waitForElementToBeDisplayed(headerInfoText);
+        log.info("Get Header Info Text");
+        return headerInfoText.getText();
+    }
+
+    public HomePage openFirstFile() {
+        helper.waitForElementToBeDisplayed(firstItemOnTheList);
+        action.moveToElement(firstItemOnTheList).doubleClick().build().perform();
+        log.info("Open First File");
+        return this;
+    }
+
+    public HomePage openSecondFile() {
+        helper.waitForElementToBeDisplayed(secondItemOnTheList);
+        action.moveToElement(secondItemOnTheList).doubleClick().build().perform();
+        log.info("Open Second File");
+        return this;
+    }
+
+    public HomePage openThirdFile() {
+        helper.waitForElementToBeDisplayed(thirdItemOnTheList);
+        action.moveToElement(thirdItemOnTheList).doubleClick().build().perform();
+        log.info("Open Third File");
         return this;
     }
 
