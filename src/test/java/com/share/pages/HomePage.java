@@ -28,15 +28,6 @@ public class HomePage {
     @FindBy(xpath = "//div[@class='folderLink-sort']")
     private WebElement sortDropdown;
 
-    @FindBy(xpath = "//div[@class='folderLink-viewSwitch']")
-    private WebElement folderViewSwitchButton;
-
-    @FindBy(className = "gallery-empty")
-    public WebElement emptyGalleryView;
-
-    @FindBy(xpath = "//div[@class='folderLink-buttons-redirection']")
-    private WebElement logInButton;
-
     @FindBy(xpath = "//a[@class='dropdown-toggle']")
     private WebElement sortByToggle;
 
@@ -61,32 +52,59 @@ public class HomePage {
     @FindBy(xpath = "//span[@class='selected-sort-field']")
     private WebElement sortByText;
 
-    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[1]/div/div")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[1]//div//div")
     private WebElement firstItemOnTheList;
 
-    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[2]/div/div")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[2]//div//div")
     private WebElement secondItemOnTheList;
 
-    @FindBy(xpath = "/html/body/div[1]/div[1]/div/section/div/div/ul/li[3]/div/div")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[3]//div//div")
     private WebElement thirdItemOnTheList;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[1]//div//div/div[4]//span//span[2]")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[1]//div//div//div[4]//span//span[2]")
     private WebElement firstItemOnTheListText;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[2]//div//div/div[4]//span//span[2]")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[2]//div//div//div[4]//span//span[2]")
     private WebElement secondItemOnTheListText;
 
-    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[3]//div//div/div[4]//span//span[2]")
+    @FindBy(xpath = "//div[@id='folder-items-wrapper']//ul//li[3]//div//div//div[4]//span//span[2]")
     private WebElement thirdItemOnTheListText;
 
-    @FindBy(className = "info")
+    @FindBy(xpath = "//div[@class='info']")
     private WebElement headerInfoText;
 
-    @FindBy(className = "controls-wrapper" )
+    @FindBy(xpath = "//li[@class='download-wrapper']" )
     private WebElement downloadButton;
 
-    @FindBy(className = "header")
+    @FindBy(xpath = "//div[@class='header']//i")
     private WebElement goBackButton;
+
+    @FindBy(xpath = "//span[@class='gallery-empty-label']")
+    private WebElement emptyGalleryViewText;
+
+    @FindBy(xpath = "//ul[@class='folderLink-topbar-actions']//li[2]//button[2]")
+    private WebElement folderViewButton;
+
+    @FindBy(xpath = "//div[@class='folderLink-buttons']//button[2]")
+    private WebElement logInButton;
+
+    @FindBy(xpath = "//form[@id='usernameForm']//button")
+    private WebElement logInContinueButton;
+
+    @FindBy(xpath = "//div[@class='error-msg-container']//span")
+    private WebElement errorMessageContainerText;
+
+    @FindBy(id = "loginUsername")
+    public WebElement logInUsernameBox;
+
+    @FindBy(className = "preview-error-component__message")
+    private WebElement errorPreviewMessageText;
+
+    @FindBy(xpath = "//div[@class='arrows-inner']//a[1]")
+    private WebElement previousArrow;
+
+    @FindBy(xpath = "//div[@class='arrows-inner']//a[2]")
+    private WebElement nextArrow;
 
     private SeleniumHelper helper;
     private WebDriver driver;
@@ -99,7 +117,6 @@ public class HomePage {
         this.driver = driver;
         this.action = new Actions(driver);
     }
-
 
     public HomePage logIn() {
         log.info("Login Process");
@@ -182,24 +199,14 @@ public class HomePage {
     }
 
     public String getSortByTitleText() {
+        helper.waitForElementToBeDisplayed(sortByText);
         return sortByText.getText();
     }
 
     public HomePage selectFirstItemOnTheList() {
+        helper.waitForElementToBeDisplayed(firstItemOnTheList);
         log.info("Select First Item On The List");
         firstItemOnTheList.click();
-        return this;
-    }
-
-    public HomePage selectSecondItemOnTheList() {
-        log.info("Select Second Item On The List");
-        secondItemOnTheList.click();
-        return this;
-    }
-
-    public HomePage selectThirdItemOnTheList() {
-        log.info("Select Third Item On The List");
-        thirdItemOnTheList.click();
         return this;
     }
 
@@ -229,22 +236,75 @@ public class HomePage {
 
     public HomePage openFirstFile() {
         helper.waitForElementToBeDisplayed(firstItemOnTheList);
-        action.moveToElement(firstItemOnTheList).doubleClick().build().perform();
+        action.doubleClick(firstItemOnTheList).perform();
         log.info("Open First File");
         return this;
     }
 
     public HomePage openSecondFile() {
         helper.waitForElementToBeDisplayed(secondItemOnTheList);
-        action.moveToElement(secondItemOnTheList).doubleClick().build().perform();
+        action.doubleClick(secondItemOnTheList).perform();
         log.info("Open Second File");
         return this;
     }
 
     public HomePage openThirdFile() {
         helper.waitForElementToBeDisplayed(thirdItemOnTheList);
-        action.moveToElement(thirdItemOnTheList).doubleClick().build().perform();
+        action.doubleClick(thirdItemOnTheList).perform();
         log.info("Open Third File");
+        return this;
+    }
+
+    public String getEmptyGalleryViewText() {
+        helper.waitForElementToBeDisplayed(emptyGalleryViewText);
+        log.info("Get Empty Gallery View Text");
+        return emptyGalleryViewText.getText();
+    }
+
+    public HomePage switchFolderViewButton() {
+        helper.waitForElementToBeDisplayed(folderViewButton);
+        folderViewButton.click();
+        log.info("View Folder View Change");
+        return this;
+    }
+
+    public HomePage clickLogInButton() {
+        helper.waitForElementToBeDisplayed(logInButton);
+        logInButton.click();
+        log.info("Click Log In Button");
+        return this;
+    }
+
+    public HomePage clickLogInContinueButton() {
+        helper.waitForElementToBeDisplayed(logInContinueButton);
+        logInContinueButton.click();
+        log.info("Click Continue Button In Log In Page");
+        return this;
+    }
+
+    public String getErrorMessageContainerText() {
+        helper.waitForElementToBeDisplayed(errorMessageContainerText);
+        log.info("Error Message Forced");
+        return errorMessageContainerText.getText();
+    }
+
+    public String getErrorPreviewMessageText() {
+        helper.waitForElementToBeDisplayed(errorPreviewMessageText);
+        log.info("Error Preview Message Text");
+        return errorPreviewMessageText.getText();
+    }
+
+    public HomePage clickPreviousArrow() {
+        helper.waitForElementToBeDisplayed(previousArrow);
+        previousArrow.click();
+        log.info("Previous Arrow Clicked");
+        return this;
+    }
+
+    public HomePage clickNextArrow() {
+        helper.waitForElementToBeDisplayed(nextArrow);
+        nextArrow.click();
+        log.info("Next Arrow Clicked");
         return this;
     }
 

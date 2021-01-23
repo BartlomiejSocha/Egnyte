@@ -1,6 +1,5 @@
 package com.share.helpers;
 
-import com.aventstack.extentreports.Status;
 import com.share.exceptions.NoSuchDriverException;
 import com.share.utils.DriverFactory;
 import com.share.utils.DriverType;

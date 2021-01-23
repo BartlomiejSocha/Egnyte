@@ -2,7 +2,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="3" name="Suite" parallel="tests">
     <test name="" thread-count="5" parallel="methods">
-    </test>
-    <test name="" thread-count="5" parallel="methods">
+        <classes>
+            <class name="com.share.tests.EgnytePageTests"></class>
+        </classes>
     </test>
 </suite>
